@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS `car_class`;
 CREATE TABLE `car_class` (
   `id` int NOT NULL AUTO_INCREMENT,
   `class` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `price_var` tinyint unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `class_UNIQUE` (`class`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -36,9 +37,23 @@ CREATE TABLE `car_class` (
 
 LOCK TABLES `car_class` WRITE;
 /*!40000 ALTER TABLE `car_class` DISABLE KEYS */;
-INSERT INTO `car_class` VALUES (3,'бизнес'),(2,'стандарт'),(1,'эконом');
+INSERT INTO `car_class` VALUES (1,'эконом',1),(2,'стандарт',2),(3,'бизнес',4);
 /*!40000 ALTER TABLE `car_class` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `car_drive_trips`
+--
+
+DROP TABLE IF EXISTS `car_drive_trips`;
+/*!50001 DROP VIEW IF EXISTS `car_drive_trips`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `car_drive_trips` AS SELECT 
+ 1 AS `Автомобиль`,
+ 1 AS `Имя водителя`,
+ 1 AS `Количество поездок`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `cars`
@@ -135,6 +150,20 @@ LOCK TABLES `drivers` WRITE;
 INSERT INTO `drivers` VALUES (1,'tabitha.kirlin@example.com',89121802896,'15cd58d7432e94ecfc0b018b04824659f9ca9da1'),(2,'trever.littel@example.com',89875137392,'ff8051e8303d87ca6bd6c49d2384b72d7b67a9d9'),(3,'doyle76@example.org',89018422873,'8874bdc80e6a7d6d84c7ad42da63eafb3253596a'),(4,'jalyn13@example.net',89594542253,'5c23f07b787c2c630fcaed5b9fdb67e114a79c75'),(5,'kautzer.julian@example.net',89959080617,'17b937c33946ce4a6ee79fdabdd001b2c6773694'),(6,'rodriguez.theresa@example.com',89624294518,'14a291e965e9b16b77fce65bb472d42d3a0b90ae'),(7,'dlang@example.com',89872759327,'aeabd5d8d93659a1dc8f75c58f029058979610cb'),(8,'aliyah.veum@example.net',89136657469,'421085d91c46973cb450c3c2bf8331ef7667c331'),(9,'jsteuber@example.org',89639970046,'254b1d3df4714bdc66755ad3192196525cf5796b'),(10,'rudy67@example.org',89584590247,'a67d085fce5b2afd552f51192a48545b50e02d84'),(11,'breanne57@example.net',89788596522,'dd6f33e921c63229cb1bbd73f6d48e9290ffdb1b'),(12,'albertha.rutherford@example.net',89639521285,'499188817e4b2902f82f6ca15b684dbe794e60a9'),(13,'kwisoky@example.org',89729598491,'78ad4531fed2da2e511dc5d6b60c1e426d972b83'),(14,'jodie76@example.org',89715045880,'5698adc1ccf0fd72324619b08edaf2a0a7dbafdd'),(15,'langosh.weston@example.org',89734010347,'9058bc3b596bbee26db6dfd1f0ce79b3d5d45fda'),(16,'o\'kon.adrain@example.org',89341273921,'1187e645413f3b99c15b5f6aba4347ee81ce4d94'),(17,'quigley.velma@example.net',89580564159,'a87dc7c067f05d037857600fc829e4d2a3e802a4'),(18,'prunolfsson@example.com',89091910751,'baff7607691096fd98d9dee2a5bc2f0a136cf56d'),(19,'pacocha.asia@example.org',89582418735,'2dd856f9f8697b7028c3dca1a64e80488c44fb0c'),(20,'fcrooks@example.net',89901664646,'c52e91980d862057bd9d29589b486462d90a2af4');
 /*!40000 ALTER TABLE `drivers` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `earnings`
+--
+
+DROP TABLE IF EXISTS `earnings`;
+/*!50001 DROP VIEW IF EXISTS `earnings`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `earnings` AS SELECT 
+ 1 AS `ID водителя`,
+ 1 AS `Имя водителя`,
+ 1 AS `earning`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `like_type`
@@ -345,7 +374,7 @@ CREATE TABLE `trip` (
 
 LOCK TABLES `trip` WRITE;
 /*!40000 ALTER TABLE `trip` DISABLE KEYS */;
-INSERT INTO `trip` VALUES (1,1,8,'Confirmed','1992-12-30 22:27:10','1998-09-18 14:27:09','07:16:56','26447 Langosh Vista Apt. 135\nWest Daisybury, ','919 O\'Conner Stream\nMikaylachester, GA 30288-'),(2,1,6,'Confirmed','1974-03-16 10:59:47','1992-05-30 05:57:55','23:23:24','061 Abshire Cove\nWest Bonita, FL 74368','125 Herminio Mountains\nSpinkachester, IN 4765'),(3,2,12,'Confirmed','1982-05-05 08:15:27','1988-06-18 21:21:28','09:43:43','827 Nader Skyway Apt. 472\nHicklebury, AR 4282','13846 Gloria Alley\nBartellchester, KY 44455'),(4,2,9,'Canceled','1986-12-29 13:48:35','2020-02-21 22:31:25','15:34:13','8800 Konopelski Street\nHomenickville, IL 0029','815 Miller Expressway Apt. 228\nNew Tyresemout'),(5,2,18,'Canceled','2004-12-14 13:13:34','1974-08-10 17:12:51','06:34:46','6603 Kovacek Heights\nLake Kavonberg, MD 95459','97173 Gilberto Trail\nMaximiliantown, MO 06384'),(6,7,5,'Canceled','1970-04-29 09:37:16','1999-11-13 16:13:35','01:55:19','916 Mayert Tunnel\nNew Lelia, VA 94849-8785','70038 Emmanuelle Plains Apt. 984\nHeathcotesta'),(7,2,18,'Confirmed','2010-08-01 12:26:18','1971-05-06 14:16:21','22:15:27','8992 Jenkins Trafficway Apt. 314\nPaulfurt, WA','0501 Sylvan Villages Suite 932\nLake Helena, M'),(8,1,19,'Confirmed','1981-07-29 04:28:51','1997-05-29 22:42:19','20:44:00','8595 Rhianna Locks\nSouth Odie, NC 69949','3855 Abbie Course Suite 574\nLake Callie, TX 3'),(9,3,16,'Confirmed','2002-12-18 10:12:41','1997-01-20 15:22:26','15:26:37','875 Eldridge Gardens\nHoseaborough, UT 06339-8','394 Dereck Neck\nMckaylaport, TN 18003'),(10,3,7,'Confirmed','2000-07-08 09:44:31','2008-07-30 16:06:11','05:00:55','6089 Pansy Mission\nSengermouth, ME 34971-7158','805 Tromp Turnpike Suite 288\nNorth Abdiel, AR'),(11,3,8,'Canceled','1983-08-04 17:46:51','2015-09-14 21:28:17','12:03:00','529 Ferry Alley Suite 980\nD\'Amorefurt, FL 861','5480 Flossie Knoll\nEast Alejandrinhaven, WY 5'),(12,2,6,'Confirmed','1987-03-07 14:09:40','1989-03-13 09:12:42','12:46:20','73941 Strosin Islands\nMarvinburgh, MD 63311','09444 Callie Forest\nFarrellville, MS 53586'),(13,1,9,'Canceled','2007-12-29 05:34:38','1973-01-27 21:53:34','01:30:50','2736 Antonietta Fields Apt. 421\nSouth Adahton','304 Ledner Walks\nUrbanbury, MA 50359'),(14,8,17,'Canceled','1980-12-14 14:39:53','1987-08-21 11:09:14','04:51:11','0073 Chad Estates\nLake Ruthe, DE 37392-1553','764 Ethyl Dale Suite 844\nSchimmelmouth, NM 70'),(15,39,8,'Canceled','1997-07-24 12:43:18','1996-10-23 21:33:33','19:01:34','275 Reynolds Stream\nJuwanberg, MN 73546-1759','077 Jessy Estates\nCitlallifurt, MI 72732'),(16,2,10,'Confirmed','1999-11-16 06:24:13','2005-07-06 05:59:05','12:42:35','6529 Veum Glen Apt. 423\nCummeratachester, UT ','8291 Farrell Pike Suite 081\nMaciebury, ME 384'),(17,30,4,'Confirmed','1998-05-30 07:30:38','1995-01-08 10:57:59','01:29:11','60901 Camylle Squares Suite 534\nJakobburgh, I','8337 Leannon Orchard\nAnnabellton, WI 98706'),(18,30,1,'Canceled','1981-02-25 23:47:25','1981-08-19 13:15:36','22:59:07','281 Runte Mill Suite 896\nEast Arlo, KY 77992','5422 Antonio Village Suite 984\nPort Kobemouth'),(19,31,1,'Canceled','1991-07-10 02:55:56','1991-01-10 01:35:11','08:42:17','27820 Rey Haven Suite 744\nCooperbury, MT 2030','83935 Amber Forest Apt. 172\nWest Royalburgh, '),(20,19,4,'Confirmed','1981-06-23 16:08:45','2016-05-26 12:04:46','20:11:17','0780 Yundt Manor\nMaggiobury, NY 43255','803 Hills Lodge Suite 016\nPort Winona, MS 212'),(21,36,13,'Confirmed','2014-07-21 23:48:15','2012-08-24 05:50:31','05:33:44','46796 Hoppe Court Apt. 701\nNew Davidview, WA ','33566 Johns Bypass\nNew Malachistad, HI 67911-'),(22,17,9,'Canceled','2019-10-18 02:56:47','1976-10-28 10:12:00','10:26:17','829 Runolfsdottir Villages\nSalvadormouth, LA ','609 Annette Plains\nKuvalistown, KS 85369-6131'),(23,22,3,'Confirmed','1973-06-12 22:53:46','2009-02-25 09:45:18','07:05:00','035 Ida Lodge Apt. 836\nLake Willis, SC 56781-','4783 Isac Dale\nNew Johnathon, IN 72952-3820'),(24,14,2,'Canceled','2021-01-11 00:18:27','1989-04-17 06:01:08','20:36:14','8041 Amina Coves Suite 825\nSouth Germaine, IN','97594 Lionel Orchard\nSouth Orphaside, WI 9465'),(25,37,15,'Canceled','2001-12-30 12:40:40','1970-01-22 02:16:34','23:33:13','517 Dixie Heights\nLake Chazfort, VT 20267','8609 Christiansen Shores Suite 816\nSouth Dana'),(26,17,15,'Canceled','1983-02-01 03:11:38','2010-01-08 21:39:12','10:06:44','02461 Lisa Landing\nWest Laney, WV 33963','287 Stoltenberg Mountains\nWest Laisha, ID 144'),(27,4,19,'Canceled','1996-02-08 16:26:42','2010-03-10 00:08:47','07:26:21','537 Anabel Estates\nCornellstad, HI 32120-9688','312 Nolan Route\nSouth Cory, DC 90988-0112'),(28,40,8,'Canceled','2014-09-06 09:34:17','2018-07-08 05:02:59','18:27:52','6883 Lilly Neck Apt. 096\nPort Chesterview, KS','7900 Vandervort Extensions\nPort Caleb, OH 574'),(29,15,4,'Confirmed','2018-03-23 16:06:06','2008-02-12 23:01:32','07:07:49','65331 Greenholt Track\nWest Vadaside, GA 65200','8901 King Inlet Suite 046\nNew Solonview, AL 8'),(30,10,7,'Confirmed','1982-09-24 00:40:44','1998-05-01 14:04:29','18:58:10','0137 Denesik Heights Suite 319\nEast Arvillavi','66552 Amani Lane\nNew Terry, KY 51406-6024'),(31,22,6,'Canceled','1972-11-15 15:43:35','2009-06-20 14:27:27','06:36:25','606 Hildegard Place Suite 315\nPort Eleazar, N','87400 Dudley Curve\nLake Gladys, GA 08100-0773'),(32,32,6,'Confirmed','1995-02-28 20:43:22','1982-07-24 00:04:45','15:57:25','480 Sallie Radial Apt. 429\nNorth Angeloview, ','06829 Koepp Estates\nEast Jarrell, AK 42655'),(33,19,11,'Confirmed','1977-04-05 23:15:36','2014-05-15 19:28:24','11:06:30','723 Walter Mountains Apt. 909\nKuhnport, MD 02','75110 Boyle Road Apt. 864\nNorth Emmanuellemou'),(34,13,5,'Confirmed','2020-01-18 22:35:41','1979-11-25 15:16:03','18:46:53','0623 Price Mall Suite 956\nTorpberg, OR 90844','9526 Waters Terrace\nRoobshire, IL 98996-3258'),(35,22,16,'Canceled','1995-02-07 20:49:03','1981-01-01 10:02:06','14:27:05','561 Lauretta Corners\nJacobsonton, NY 77229','883 Raina Circles\nWest Arnoldport, OH 20195'),(36,17,9,'Canceled','1997-03-31 03:26:17','2020-04-13 17:39:21','17:34:30','62018 Kasandra Pike Suite 433\nJakubowskiport,','21493 Gino Rest\nRossieside, SC 12963-3880'),(37,17,17,'Confirmed','2011-10-11 23:18:46','1972-03-06 23:49:15','16:13:15','4471 Janice Orchard Apt. 272\nEast Sanfordshir','7900 Brittany Avenue\nAbshireburgh, TX 08336'),(38,34,19,'Canceled','1995-04-13 23:46:54','2014-04-04 08:26:41','16:38:39','278 Bins Square Apt. 567\nErnsermouth, MI 0199','3114 Kessler Bridge Apt. 745\nSouth Arne, AK 8'),(39,39,4,'Canceled','1984-08-20 16:21:45','2006-08-24 14:05:59','18:15:15','69021 Koss Mills Suite 368\nNew Donnyhaven, OR','32391 Heidenreich Road\nWest Domenico, IA 3739'),(40,2,18,'Canceled','2012-07-05 05:17:24','1982-04-25 07:53:00','23:54:49','1143 Botsford Valley\nHueltown, MO 71015-9001','68645 Isabella Knolls Suite 369\nO\'Konberg, OH');
+INSERT INTO `trip` VALUES (1,1,8,'Confirmed','1992-12-30 22:27:10','1998-09-18 14:27:09','00:16:56','26447 Langosh Vista Apt. 135\nWest Daisybury, ','919 O\'Conner Stream\nMikaylachester, GA 30288-'),(2,1,6,'Confirmed','1974-03-16 10:59:47','1992-05-30 05:57:55','00:23:24','061 Abshire Cove\nWest Bonita, FL 74368','125 Herminio Mountains\nSpinkachester, IN 4765'),(3,2,12,'Confirmed','1982-05-05 08:15:27','1988-06-18 21:21:28','00:43:43','827 Nader Skyway Apt. 472\nHicklebury, AR 4282','13846 Gloria Alley\nBartellchester, KY 44455'),(4,2,9,'Canceled','1986-12-29 13:48:35','2020-02-21 22:31:25','00:34:13','8800 Konopelski Street\nHomenickville, IL 0029','815 Miller Expressway Apt. 228\nNew Tyresemout'),(5,2,18,'Canceled','2004-12-14 13:13:34','1974-08-10 17:12:51','00:34:46','6603 Kovacek Heights\nLake Kavonberg, MD 95459','97173 Gilberto Trail\nMaximiliantown, MO 06384'),(6,7,5,'Canceled','1970-04-29 09:37:16','1999-11-13 16:13:35','01:55:19','916 Mayert Tunnel\nNew Lelia, VA 94849-8785','70038 Emmanuelle Plains Apt. 984\nHeathcotesta'),(7,2,18,'Confirmed','2010-08-01 12:26:18','1971-05-06 14:16:21','02:15:27','8992 Jenkins Trafficway Apt. 314\nPaulfurt, WA','0501 Sylvan Villages Suite 932\nLake Helena, M'),(8,1,19,'Confirmed','1981-07-29 04:28:51','1997-05-29 22:42:19','00:44:00','8595 Rhianna Locks\nSouth Odie, NC 69949','3855 Abbie Course Suite 574\nLake Callie, TX 3'),(9,3,16,'Confirmed','2002-12-18 10:12:41','1997-01-20 15:22:26','00:26:37','875 Eldridge Gardens\nHoseaborough, UT 06339-8','394 Dereck Neck\nMckaylaport, TN 18003'),(10,3,7,'Confirmed','2000-07-08 09:44:31','2008-07-30 16:06:11','05:00:55','6089 Pansy Mission\nSengermouth, ME 34971-7158','805 Tromp Turnpike Suite 288\nNorth Abdiel, AR'),(11,3,8,'Canceled','1983-08-04 17:46:51','2015-09-14 21:28:17','00:03:00','529 Ferry Alley Suite 980\nD\'Amorefurt, FL 861','5480 Flossie Knoll\nEast Alejandrinhaven, WY 5'),(12,2,6,'Confirmed','1987-03-07 14:09:40','1989-03-13 09:12:42','00:46:20','73941 Strosin Islands\nMarvinburgh, MD 63311','09444 Callie Forest\nFarrellville, MS 53586'),(13,1,9,'Canceled','2007-12-29 05:34:38','1973-01-27 21:53:34','01:30:50','2736 Antonietta Fields Apt. 421\nSouth Adahton','304 Ledner Walks\nUrbanbury, MA 50359'),(14,8,17,'Canceled','1980-12-14 14:39:53','1987-08-21 11:09:14','00:51:11','0073 Chad Estates\nLake Ruthe, DE 37392-1553','764 Ethyl Dale Suite 844\nSchimmelmouth, NM 70'),(15,39,8,'Canceled','1997-07-24 12:43:18','1996-10-23 21:33:33','00:01:34','275 Reynolds Stream\nJuwanberg, MN 73546-1759','077 Jessy Estates\nCitlallifurt, MI 72732'),(16,2,10,'Confirmed','1999-11-16 06:24:13','2005-07-06 05:59:05','00:42:35','6529 Veum Glen Apt. 423\nCummeratachester, UT ','8291 Farrell Pike Suite 081\nMaciebury, ME 384'),(17,30,4,'Confirmed','1998-05-30 07:30:38','1995-01-08 10:57:59','00:29:11','60901 Camylle Squares Suite 534\nJakobburgh, I','8337 Leannon Orchard\nAnnabellton, WI 98706'),(18,30,1,'Canceled','1981-02-25 23:47:25','1981-08-19 13:15:36','00:59:07','281 Runte Mill Suite 896\nEast Arlo, KY 77992','5422 Antonio Village Suite 984\nPort Kobemouth'),(19,31,1,'Canceled','1991-07-10 02:55:56','1991-01-10 01:35:11','00:42:17','27820 Rey Haven Suite 744\nCooperbury, MT 2030','83935 Amber Forest Apt. 172\nWest Royalburgh, '),(20,19,4,'Confirmed','1981-06-23 16:08:45','2016-05-26 12:04:46','00:11:17','0780 Yundt Manor\nMaggiobury, NY 43255','803 Hills Lodge Suite 016\nPort Winona, MS 212'),(21,36,13,'Confirmed','2014-07-21 23:48:15','2012-08-24 05:50:31','05:33:44','46796 Hoppe Court Apt. 701\nNew Davidview, WA ','33566 Johns Bypass\nNew Malachistad, HI 67911-'),(22,17,9,'Canceled','2019-10-18 02:56:47','1976-10-28 10:12:00','02:26:17','829 Runolfsdottir Villages\nSalvadormouth, LA ','609 Annette Plains\nKuvalistown, KS 85369-6131'),(23,22,3,'Confirmed','1973-06-12 22:53:46','2009-02-25 09:45:18','01:05:00','035 Ida Lodge Apt. 836\nLake Willis, SC 56781-','4783 Isac Dale\nNew Johnathon, IN 72952-3820'),(24,14,2,'Canceled','2021-01-11 00:18:27','1989-04-17 06:01:08','00:36:14','8041 Amina Coves Suite 825\nSouth Germaine, IN','97594 Lionel Orchard\nSouth Orphaside, WI 9465'),(25,37,15,'Canceled','2001-12-30 12:40:40','1970-01-22 02:16:34','00:33:13','517 Dixie Heights\nLake Chazfort, VT 20267','8609 Christiansen Shores Suite 816\nSouth Dana'),(26,17,15,'Canceled','1983-02-01 03:11:38','2010-01-08 21:39:12','00:06:44','02461 Lisa Landing\nWest Laney, WV 33963','287 Stoltenberg Mountains\nWest Laisha, ID 144'),(27,4,19,'Canceled','1996-02-08 16:26:42','2010-03-10 00:08:47','04:26:21','537 Anabel Estates\nCornellstad, HI 32120-9688','312 Nolan Route\nSouth Cory, DC 90988-0112'),(28,40,8,'Canceled','2014-09-06 09:34:17','2018-07-08 05:02:59','01:27:52','6883 Lilly Neck Apt. 096\nPort Chesterview, KS','7900 Vandervort Extensions\nPort Caleb, OH 574'),(29,15,4,'Confirmed','2018-03-23 16:06:06','2008-02-12 23:01:32','00:07:49','65331 Greenholt Track\nWest Vadaside, GA 65200','8901 King Inlet Suite 046\nNew Solonview, AL 8'),(30,10,7,'Confirmed','1982-09-24 00:40:44','1998-05-01 14:04:29','03:58:10','0137 Denesik Heights Suite 319\nEast Arvillavi','66552 Amani Lane\nNew Terry, KY 51406-6024'),(31,22,6,'Canceled','1972-11-15 15:43:35','2009-06-20 14:27:27','06:36:25','606 Hildegard Place Suite 315\nPort Eleazar, N','87400 Dudley Curve\nLake Gladys, GA 08100-0773'),(32,32,6,'Confirmed','1995-02-28 20:43:22','1982-07-24 00:04:45','00:57:25','480 Sallie Radial Apt. 429\nNorth Angeloview, ','06829 Koepp Estates\nEast Jarrell, AK 42655'),(33,19,11,'Confirmed','1977-04-05 23:15:36','2014-05-15 19:28:24','00:06:30','723 Walter Mountains Apt. 909\nKuhnport, MD 02','75110 Boyle Road Apt. 864\nNorth Emmanuellemou'),(34,13,5,'Confirmed','2020-01-18 22:35:41','1979-11-25 15:16:03','00:46:53','0623 Price Mall Suite 956\nTorpberg, OR 90844','9526 Waters Terrace\nRoobshire, IL 98996-3258'),(35,22,16,'Canceled','1995-02-07 20:49:03','1981-01-01 10:02:06','14:27:05','561 Lauretta Corners\nJacobsonton, NY 77229','883 Raina Circles\nWest Arnoldport, OH 20195'),(36,17,9,'Canceled','1997-03-31 03:26:17','2020-04-13 17:39:21','04:34:30','62018 Kasandra Pike Suite 433\nJakubowskiport,','21493 Gino Rest\nRossieside, SC 12963-3880'),(37,17,17,'Confirmed','2011-10-11 23:18:46','1972-03-06 23:49:15','02:13:15','4471 Janice Orchard Apt. 272\nEast Sanfordshir','7900 Brittany Avenue\nAbshireburgh, TX 08336'),(38,34,19,'Canceled','1995-04-13 23:46:54','2014-04-04 08:26:41','00:38:39','278 Bins Square Apt. 567\nErnsermouth, MI 0199','3114 Kessler Bridge Apt. 745\nSouth Arne, AK 8'),(39,39,4,'Canceled','1984-08-20 16:21:45','2006-08-24 14:05:59','01:15:15','69021 Koss Mills Suite 368\nNew Donnyhaven, OR','32391 Heidenreich Road\nWest Domenico, IA 3739'),(40,2,18,'Canceled','2012-07-05 05:17:24','1982-04-25 07:53:00','00:54:49','1143 Botsford Valley\nHueltown, MO 71015-9001','68645 Isabella Knolls Suite 369\nO\'Konberg, OH');
 /*!40000 ALTER TABLE `trip` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,6 +385,72 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'my_project'
 --
+/*!50003 DROP FUNCTION IF EXISTS `trip_price` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `trip_price`(id_of_trip INT) RETURNS bigint
+    DETERMINISTIC
+BEGIN
+	DECLARE _i INT;
+	DECLARE _trip_price INT;
+    SET _i = (SELECT `price_var` FROM `car_class` WHERE `car_class`.`id` = (
+		SELECT `car_class_id` FROM `cars` WHERE `cars`.`id` = (
+		SELECT `cars_id` FROM `driver_profiles` WHERE `driver_profiles`.`drivers_id` = (
+        SELECT `drivers_id` FROM `trip` WHERE `trip`.`id` = id_of_trip))));
+	 
+    SET _trip_price = _i * ((SELECT HOUR(trip_time) FROM trip WHERE `trip`.`id` = id_of_trip) * 1000 + 
+    (SELECT MINUTE(trip_time) FROM trip WHERE `trip`.`id` = id_of_trip) * 10);
+    
+    RETURN _trip_price;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Final view structure for view `car_drive_trips`
+--
+
+/*!50001 DROP VIEW IF EXISTS `car_drive_trips`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `car_drive_trips` AS select concat(`cars`.`manufacturer`,' ',`cars`.`model`) AS `Автомобиль`,concat(`driver_profiles`.`firstname`,' ',`driver_profiles`.`lastname`) AS `Имя водителя`,(select count(`trip`.`id`) from `trip` where (`trip`.`drivers_id` = `driver_profiles`.`drivers_id`)) AS `Количество поездок` from (`cars` join `driver_profiles` on((`driver_profiles`.`cars_id` = `cars`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `earnings`
+--
+
+/*!50001 DROP VIEW IF EXISTS `earnings`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `earnings` AS select `driver_profiles`.`drivers_id` AS `ID водителя`,concat(`driver_profiles`.`firstname`,' ',`driver_profiles`.`lastname`) AS `Имя водителя`,(select sum(`TRIP_PRICE`(`trip`.`id`)) from `trip` where (`trip`.`drivers_id` = `driver_profiles`.`drivers_id`)) AS `earning` from `driver_profiles` order by (select sum(`TRIP_PRICE`(`trip`.`id`)) from `trip` where (`trip`.`drivers_id` = `driver_profiles`.`drivers_id`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -366,4 +461,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-05 22:31:38
+-- Dump completed on 2021-04-07  0:17:54
